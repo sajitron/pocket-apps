@@ -1,5 +1,10 @@
 package main
 
+import (
+	"encoding/json"
+	"os"
+)
+
 // A Bookworm contains the list of books on a bookworm's shelf.
 type Bookworm struct {
 	Name  string `json:"name"`
@@ -14,5 +19,20 @@ type Book struct {
 
 // loadBookworms reads the file and returns the list of bookworms, and their beloved books, found therein.
 func loadBookworms(filePath string) ([]Bookworm, error) {
-	return nil, nil
+	f, err := os.Open(filePath)
+	if err != nil {
+		return nil, err
+	}
+
+	defer f.Close()
+
+	// Initialize the type in which the file will be decoded.
+	var bookworms []Bookworm
+
+	// Decode the file and store the content in the value bookworms.
+	err = json.NewDecoder(f).Decode(&bookworms)
+	if err != nil {
+		return nil, err
+	}
+	return bookworms, nil
 }
