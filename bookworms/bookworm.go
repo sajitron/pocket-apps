@@ -36,3 +36,21 @@ func loadBookworms(filePath string) ([]Bookworm, error) {
 	}
 	return bookworms, nil
 }
+
+func findCommonBooks(bookworms []Bookworm) []Book {
+	// write books for each bookworm into a map to avoid nested loops
+	books := make(map[string]int)
+	for _, bookworm := range bookworms {
+		for _, book := range bookworm.Books {
+			books[book.Title]++
+		}
+	}
+	// find books that are on more than one bookworm's shelf
+	var commonBooks []Book
+	for title, count := range books {
+		if count > 1 {
+			commonBooks = append(commonBooks, Book{Title: title})
+		}
+	}
+	return commonBooks
+}
