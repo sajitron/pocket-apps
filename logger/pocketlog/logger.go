@@ -45,13 +45,20 @@ func (l *Logger) Errorf(format string, args ...any) {
 	}
 }
 
-// New returns a logger, ready to log at the required threshold
-// The default output is Stdout
-func New(threshold Level, output io.Writer) *Logger {
-	return &Logger{
+// New returns a logger, ready to log at the required threshold.
+// Give it a list of configuration functions to tune it at your will.
+// The default output is Stdout.
+func New(threshold Level, opts ...Option) *Logger {
+	lgr := &Logger{
 		threshold: threshold,
-		output:    output,
+		output:    os.Stdout,
 	}
+
+	for _, configFunc := range opts {
+		configFunc(lgr)
+	}
+
+	return lgr
 }
 
 // logf prints the message to the output.
