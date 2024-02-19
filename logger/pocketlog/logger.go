@@ -19,7 +19,7 @@ func (l *Logger) Debugf(format string, args ...any) {
 	}
 
 	if l.threshold <= LevelDebug {
-		l.logf(format, args...)
+		l.logf(LevelDebug, format, args...)
 	}
 }
 
@@ -30,7 +30,7 @@ func (l *Logger) Infof(format string, args ...any) {
 	}
 
 	if l.threshold <= LevelInfo {
-		l.logf(format, args...)
+		l.logf(LevelInfo, format, args...)
 	}
 }
 
@@ -41,7 +41,7 @@ func (l *Logger) Errorf(format string, args ...any) {
 	}
 
 	if l.threshold <= LevelError {
-		l.logf(format, args...)
+		l.logf(LevelError, format, args...)
 	}
 }
 
@@ -63,6 +63,7 @@ func New(threshold Level, opts ...Option) *Logger {
 
 // logf prints the message to the output.
 // Add decorations here, if any.
-func (l *Logger) logf(format string, args ...any) {
-	_, _ = fmt.Fprintf(l.output, format+"\n", args...)
+func (l *Logger) logf(logLevel Level, format string, args ...any) {
+	message := fmt.Sprintf(format, args...)
+	_, _ = fmt.Fprintf(l.output, "%s %s\n", logLevel, message)
 }
