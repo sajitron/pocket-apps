@@ -67,3 +67,10 @@ func (l *Logger) logf(logLevel Level, format string, args ...any) {
 	message := fmt.Sprintf(format, args...)
 	_, _ = fmt.Fprintf(l.output, "%s %s\n", logLevel, message)
 }
+
+// Logf formats and prints a message if the log level is high enough
+func (l *Logger) Logf(logLevel Level, format string, args ...any) {
+	if l.threshold <= logLevel {
+		l.logf(logLevel, format, args...)
+	}
+}

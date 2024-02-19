@@ -58,7 +58,7 @@ func TestLogger_DebugfInfofErrorf(t *testing.T) {
 			testedLogger := pocketlog.New(tc.level, pocketlog.WithOutput(tw))
 			testedLogger.Debugf(debugMessage)
 			testedLogger.Infof(infoMessage)
-			testedLogger.Errorf(errorMessage)
+			testedLogger.Logf(pocketlog.LevelError, errorMessage)
 
 			if tw.contents != tc.expected {
 				t.Errorf("invalid contents, expected %q, got %q", tc.expected, tw.contents)
