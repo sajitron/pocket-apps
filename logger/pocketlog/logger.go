@@ -1,6 +1,7 @@
 package pocketlog
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"os"
@@ -64,8 +65,19 @@ func New(threshold Level, opts ...Option) *Logger {
 // logf prints the message to the output.
 // Add decorations here, if any.
 func (l *Logger) logf(logLevel Level, format string, args ...any) {
-	message := fmt.Sprintf(format, args...)
-	_, _ = fmt.Fprintf(l.output, "%s %s\n", logLevel, message)
+	contents := fmt.Sprintf(format, args...)
+	msg := message{
+		Level:   logLevel.String(),
+		Message: contents,
+	}
+
+	formattedMessage, err := json.Marshal(msg)
+
+	if err != nil {
+		_, _ = fmt.Fprintf(l.output, "unable to format message for %v\n", contents)
+	}
+
+	_, _ = fmt.Fprintln(l.output, string(formattedMessage))
 }
 
 // Logf formats and prints a message if the log level is high enough
@@ -73,4 +85,10 @@ func (l *Logger) Logf(logLevel Level, format string, args ...any) {
 	if l.threshold <= logLevel {
 		l.logf(logLevel, format, args...)
 	}
+}
+
+// Message represents the JSON structure of the logged messages.
+type message struct {
+	Level   string `json:"level"`
+	Message string `json:"message"`
 }

@@ -31,23 +31,24 @@ const (
 )
 
 func TestLogger_DebugfInfofErrorf(t *testing.T) {
-	type testCase struct {
+	tt := map[string]struct {
 		level    pocketlog.Level
 		expected string
-	}
-
-	tt := map[string]testCase{
+	}{
 		"debug": {
-			level:    pocketlog.LevelDebug,
-			expected: "[DEBUG] " + debugMessage + "\n" + "[INFO] " + infoMessage + "\n" + "[ERROR] " + errorMessage + "\n",
+			level: pocketlog.LevelDebug,
+			expected: `{"level":"[DEBUG]","message":"` + debugMessage + "\"}\n" +
+				`{"level":"[INFO]","message":"` + infoMessage + "\"}\n" +
+				`{"level":"[ERROR]","message":"` + errorMessage + "\"}\n",
 		},
 		"info": {
-			level:    pocketlog.LevelInfo,
-			expected: "[INFO] " + infoMessage + "\n" + "[ERROR] " + errorMessage + "\n",
+			level: pocketlog.LevelInfo,
+			expected: `{"level":"[INFO]","message":"` + infoMessage + "\"}\n" +
+				`{"level":"[ERROR]","message":"` + errorMessage + "\"}\n",
 		},
 		"error": {
 			level:    pocketlog.LevelError,
-			expected: "[ERROR] " + errorMessage + "\n",
+			expected: `{"level":"[ERROR]","message":"` + errorMessage + "\"}\n",
 		},
 	}
 
