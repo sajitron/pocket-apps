@@ -26,7 +26,10 @@ func New(playerInput io.Reader) *Game {
 func (g *Game) Play() {
 	fmt.Println("Welcome to Gordle!")
 
-	fmt.Printf("Make a guess:\n")
+	// ask for a valid word
+	guess := g.ask()
+
+	fmt.Printf("Your guess is %s\n", string(guess))
 }
 
 // ask reads input until a valid suggestion is made (and returned)

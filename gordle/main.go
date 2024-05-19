@@ -1,8 +1,12 @@
 package main
 
-import "github.com/sajitron/pocket-apps/gordle/gordle"
+import (
+	"os"
+
+	"github.com/sajitron/pocket-apps/gordle/gordle"
+)
 
 func main() {
-	g := gordle.New()
+	g := gordle.New(os.Stdin)
 	g.Play()
 }
